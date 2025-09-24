@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Item.id, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
 
@@ -21,14 +21,14 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
-                    }
-                }
-                .onDelete(perform: deleteItems)
+//                ForEach(items) { item in
+//                    NavigationLink {
+//                        Text("Item \(item.itemDescription)")
+//                    } label: {
+//                        Text("Item")
+//                    }
+//                }
+//                .onDelete(perform: deleteItems)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -43,14 +43,20 @@ struct ContentView: View {
             Text("Select an item")
         }
         .task {
-            _ = try? await repository.retrieveMenu()
+            let local = MenuLocalService(viewContext: viewContext)
+            if let items = try? await repository.retrieveMenu() {
+                local.save(menuItems: items.menu)
+                
+                let localItems = local.fetchMenuItems()
+                print(localItems)
+            }
         }
     }
 
     private func addItem() {
         withAnimation {
             let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+            newItem.itemDecription = Date().description
 
             do {
                 try viewContext.save()
