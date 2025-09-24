@@ -5,8 +5,8 @@
 //  Created by Mehmet Tarhan on 24.09.2025.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -15,6 +15,8 @@ struct ContentView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
+
+    let repository = MenuRepository()
 
     var body: some View {
         NavigationView {
@@ -39,6 +41,9 @@ struct ContentView: View {
                 }
             }
             Text("Select an item")
+        }
+        .task {
+            _ = try? await repository.retrieveMenu()
         }
     }
 
