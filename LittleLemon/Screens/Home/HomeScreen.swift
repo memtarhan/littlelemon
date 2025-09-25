@@ -29,8 +29,11 @@ struct HomeScreen: View {
                     Image("Logo")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Image(systemName: "person.circle.fill")
-                        .foregroundStyle(Color.primaryDark)
+                    // TODO: Handle dependency injection for profile screen
+                    NavigationLink(destination: ProfileScreen(viewModel: ProfileViewModel())) {
+                        Image(systemName: "person.circle.fill")
+                            .foregroundStyle(Color.primaryDark)
+                    }
                 }
             }
         }

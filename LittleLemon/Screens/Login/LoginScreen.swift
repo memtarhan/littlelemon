@@ -113,7 +113,6 @@ struct LoginScreen: View {
                 .frame(minWidth: 0, maxWidth: .infinity)
         }
 
-        .tint(Color.primaryDark)
         .buttonStyle(.borderedProminent)
         .padding()
         .padding(.horizontal, 32)

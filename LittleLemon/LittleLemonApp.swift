@@ -12,9 +12,11 @@ struct LittleLemonApp: App {
     let persistenceController = PersistenceController.shared
     
     @StateObject var loginViewModel = LoginViewModel()
+    @StateObject var profileVieWModel = ProfileViewModel()
 
     var body: some Scene {
         WindowGroup {
+//            ProfileScreen(viewModel: profileVieWModel)
             HomeScreen()
 //            LoginScreen(viewModel: loginViewModel)
 //            ContentView()
