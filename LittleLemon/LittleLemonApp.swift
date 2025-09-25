@@ -12,7 +12,7 @@ struct LittleLemonApp: App {
     let persistenceController = PersistenceController.shared
 
     @StateObject var loginViewModel = LoginViewModel()
-    @StateObject var profileVieWModel = ProfileViewModel()
+    @StateObject var profileViewModel = ProfileViewModel()
 
     private var menuRepository: MenuRepository
 
@@ -24,11 +24,15 @@ struct LittleLemonApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            ProfileScreen(viewModel: profileVieWModel)
-            HomeScreen(menuRepository: menuRepository)
-//            LoginScreen(viewModel: loginViewModel)
-//            ContentView()
-//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            if UserSettings.shared.isLoggeedIn {
+                HomeScreen(viewModel: HomeViewModel(repository: menuRepository))
+                    .environmentObject(profileViewModel)
+
+            } else {
+                LoginScreen(viewModel: loginViewModel)
+                    .environmentObject(HomeViewModel(repository: menuRepository))
+                    .environmentObject(profileViewModel)
+            }
         }
     }
 }

@@ -13,11 +13,12 @@ fileprivate let restaurantDesription = "We are family owned Mediterranean restau
 
 struct HomeScreen: View {
     @StateObject var viewModel: HomeViewModel
+    @EnvironmentObject var profileViewModel: ProfileViewModel
 
     @State var search = ""
 
-    init(menuRepository: MenuRepository) {
-        _viewModel = StateObject(wrappedValue: HomeViewModel(repository: menuRepository))
+    init(viewModel: HomeViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -35,8 +36,7 @@ struct HomeScreen: View {
                     Image("Logo")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    // TODO: Handle dependency injection for profile screen
-                    NavigationLink(destination: ProfileScreen(viewModel: ProfileViewModel())) {
+                    NavigationLink(destination: ProfileScreen(viewModel: profileViewModel)) {
                         Image(systemName: "person.circle.fill")
                             .foregroundStyle(Color.primaryDark)
                     }
@@ -123,19 +123,9 @@ struct HomeScreen: View {
     }
 }
 
-// TODO: Move this to common views
-struct Line: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: 0, y: 0))
-        path.addLine(to: CGPoint(x: rect.width, y: 0))
-        return path
-    }
-}
-
 #Preview {
     let menuLocalService = MenuLocalService(viewContext: PersistenceController.shared.container.viewContext)
     let menuNetworkService = MenuService()
     let menuRepository = MenuRepository(localService: menuLocalService, networkService: menuNetworkService)
-    HomeScreen(menuRepository: menuRepository)
+    HomeScreen(viewModel: HomeViewModel(repository: menuRepository))
 }

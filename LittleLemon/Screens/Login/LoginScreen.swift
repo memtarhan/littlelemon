@@ -13,6 +13,8 @@ fileprivate let restaurantDesription = "We are family owned Mediterranean restau
 
 struct LoginScreen: View {
     @ObservedObject var viewModel: LoginViewModel
+    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject var profileViewModel: ProfileViewModel
 
     var body: some View {
         NavigationView {
@@ -30,6 +32,10 @@ struct LoginScreen: View {
                     }
                 }
             }
+        }
+        .fullScreenCover(isPresented: $viewModel.navigateToHome) {
+            HomeScreen(viewModel: homeViewModel)
+                .environmentObject(profileViewModel)
         }
     }
 
@@ -63,7 +69,7 @@ struct LoginScreen: View {
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
             }
-            
+
             .padding()
         }
         .frame(minWidth: 0, maxWidth: .infinity)

@@ -16,6 +16,8 @@ class LoginViewModel: ObservableObject {
     @Published var isLoginButtonEnabled = false
 
     @Published var loading = false
+    @Published var navigateToHome = false
+
 
     func login() {
         loading = true
@@ -26,6 +28,8 @@ class LoginViewModel: ObservableObject {
             UserSettings.shared.isLoggeedIn = true
 
             isLoggedIn = true
+            
+            navigateToHome.toggle()
 
         } else {
             UserSettings.shared.isLoggeedIn = true

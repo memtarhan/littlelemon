@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileScreen: View {
-    @StateObject var viewModel: ProfileViewModel
+    @ObservedObject var viewModel: ProfileViewModel
 
     var body: some View {
         VStack {
@@ -20,6 +20,11 @@ struct ProfileScreen: View {
         }
         .padding()
         .navigationTitle("Profile")
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Image("Logo")
+            }
+        }
     }
 
     private var firstNameView: some View {

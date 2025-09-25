@@ -23,7 +23,7 @@ struct MenuRepository: NetworkWrapper {
         guard localItems.isEmpty else {
             let response = try await networkService.retrieveMenu()
             
-            localService.save(menuItems: response.menu)
+//            localService.save(menuItems: response.menu)
             return response.menu.map {
                 MenuItem(id: $0.id,
                          title: $0.title,
