@@ -16,8 +16,6 @@ struct ContentView: View {
         animation: .default)
     private var items: FetchedResults<Item>
 
-    let repository = MenuRepository()
-
     var body: some View {
         NavigationView {
             List {
@@ -41,17 +39,6 @@ struct ContentView: View {
                 }
             }
             Text("Select an item")
-        }
-        .task {
-            let local = MenuLocalService(viewContext: viewContext)
-            if let items = try? await repository.retrieveMenu() {
-                local.save(menuItems: items.menu)
-                
-                let localItems = local.fetchMenuItems()
-                print(localItems)
-            }
-            
-            UserSettings.shared.firstName = "Mehmet"
         }
     }
 

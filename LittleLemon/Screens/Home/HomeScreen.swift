@@ -12,7 +12,13 @@ fileprivate let restaurantName = "Chicago"
 fileprivate let restaurantDesription = "We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist."
 
 struct HomeScreen: View {
+    @StateObject var viewModel: HomeViewModel
+
     @State var search = ""
+
+    init(menuRepository: MenuRepository) {
+        _viewModel = StateObject(wrappedValue: HomeViewModel(repository: menuRepository))
+    }
 
     var body: some View {
         NavigationView {
@@ -35,6 +41,9 @@ struct HomeScreen: View {
                             .foregroundStyle(Color.primaryDark)
                     }
                 }
+            }
+            .onAppear {
+                viewModel.fetch()
             }
         }
     }
@@ -124,5 +133,8 @@ struct Line: Shape {
 }
 
 #Preview {
-    HomeScreen()
+    let menuLocalService = MenuLocalService(viewContext: PersistenceController.shared.container.viewContext)
+    let menuNetworkService = MenuService()
+    let menuRepository = MenuRepository(localService: menuLocalService, networkService: menuNetworkService)
+    HomeScreen(menuRepository: menuRepository)
 }
