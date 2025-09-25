@@ -10,11 +10,14 @@ import SwiftUI
 @main
 struct LittleLemonApp: App {
     let persistenceController = PersistenceController.shared
+    
+    @StateObject var loginViewModel = LoginViewModel()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            LoginScreen(viewModel: loginViewModel)
+//            ContentView()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

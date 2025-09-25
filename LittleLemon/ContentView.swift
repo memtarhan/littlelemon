@@ -50,6 +50,8 @@ struct ContentView: View {
                 let localItems = local.fetchMenuItems()
                 print(localItems)
             }
+            
+            UserSettings.shared.firstName = "Mehmet"
         }
     }
 
