@@ -7,16 +7,28 @@
 
 import Combine
 
+@MainActor
 class HomeViewModel: ObservableObject {
-    var repository: MenuRepository
-    
+    @Published var menuItems: [MenuItem] = []
+    @Published var categories = MenuItemCategory.allCases
+    @Published var searchedKeyword = ""
+
+    private let repository: MenuRepository
+
     init(repository: MenuRepository!) {
         self.repository = repository
     }
 
-    func fetch() {
-        Task {
-            try? await repository.retrieveMenu()
+    func retrieve() {
+        if searchedKeyword.isEmpty {
+            Task {
+                if let item = try? await repository.retrieveMenu() {
+                    self.menuItems = item
+                }
+            }
+
+        } else {
+            menuItems = menuItems.filter { $0.title.contains(searchedKeyword) }
         }
     }
 }

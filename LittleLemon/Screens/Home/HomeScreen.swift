@@ -28,7 +28,7 @@ struct HomeScreen: View {
                 Line()
                     .stroke(style: StrokeStyle(lineWidth: 1, dash: [3]))
                     .frame(height: 1)
-                MenuItemsView(items: MenuItem.samples)
+                MenuItemsView(items: viewModel.menuItems)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -43,7 +43,7 @@ struct HomeScreen: View {
                 }
             }
             .onAppear {
-                viewModel.fetch()
+                viewModel.retrieve()
             }
         }
     }
@@ -77,7 +77,9 @@ struct HomeScreen: View {
 
             HStack {
                 Image(systemName: "magnifyingglass")
-                TextField("Search", text: $search)
+                TextField("Search", text: $viewModel.searchedKeyword) { _ in
+                    viewModel.retrieve()
+                }
             }
             .padding(12)
             .background(Color.primaryWhite)
@@ -100,10 +102,9 @@ struct HomeScreen: View {
             }
 
             HStack {
-                createCategoryCard(withTitle: "Starters")
-                createCategoryCard(withTitle: "Mains")
-                createCategoryCard(withTitle: "Desserts")
-                createCategoryCard(withTitle: "Sides")
+                ForEach(viewModel.categories) { category in
+                    createCategoryCard(withCategory: category)
+                }
             }
         }
 
@@ -111,8 +112,8 @@ struct HomeScreen: View {
     }
 
     @ViewBuilder
-    func createCategoryCard(withTitle title: String) -> some View {
-        Text(title)
+    func createCategoryCard(withCategory category: MenuItemCategory) -> some View {
+        Text(category.title)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .background(Color.secondaryWhite)

@@ -7,13 +7,14 @@
 
 import Foundation
 
-enum MenuItemCategory: String, CaseIterable {
+enum MenuItemCategory: String, CaseIterable, Identifiable {
     case starters
     case mains
     case desserts
     case sides
 
     var title: String { rawValue.capitalized }
+    var id: String { title }
 }
 
 struct MenuItem: Identifiable {
