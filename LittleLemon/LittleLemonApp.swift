@@ -15,7 +15,8 @@ struct LittleLemonApp: App {
 
     var body: some Scene {
         WindowGroup {
-            LoginScreen(viewModel: loginViewModel)
+            HomeScreen()
+//            LoginScreen(viewModel: loginViewModel)
 //            ContentView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
